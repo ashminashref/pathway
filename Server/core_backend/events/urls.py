@@ -3,12 +3,17 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import RegisterView, EventListCreateView, EventDetailView, RegisterForEventView, MyRegistrationsView
 
 urlpatterns = [
-    # Auth
+    # Auth - Added standard trailing slash endpoints ⚡
     path('register', RegisterView.as_view(), name='auth_register'),
-    path('login', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    path('register/', RegisterView.as_view()),
     
-    # Events - Added optional trailing slash formatting support
+    path('login', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login/', TokenObtainPairView.as_view()),
+    
+    path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/refresh/', TokenRefreshView.as_view()),
+    
+    # Events
     path('events', EventListCreateView.as_view(), name='event_list'),
     path('events/', EventListCreateView.as_view()), 
     path('events/<int:id>', EventDetailView.as_view(), name='event_detail'),

@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../api';
 
@@ -11,7 +11,7 @@ export default function EventDetails({ isAuthenticated, isDarkMode }) {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    api.get(`events/${id}`)
+    api.get(`events/${id}/`)
       .then(res => {
         setEvent(res.data);
         setLoading(false);
@@ -21,7 +21,7 @@ export default function EventDetails({ isAuthenticated, isDarkMode }) {
       });
   }, [id]);
 
- const handleRegister = async () => {
+  const handleRegister = async () => {
     if (!isAuthenticated) {
       navigate('/login');
       return;
@@ -30,7 +30,7 @@ export default function EventDetails({ isAuthenticated, isDarkMode }) {
     setMessage({ type: '', text: '' });
 
     try {
-      await api.post(`events/${id}/register`);
+      await api.post(`events/${id}/register/`);
       setMessage({ type: 'success', text: 'Success! Your registration has been confirmed.' });
       
       setEvent(prev => ({
@@ -52,7 +52,7 @@ export default function EventDetails({ isAuthenticated, isDarkMode }) {
 
   if (loading) {
     return (
-      <div className="text-center py-32 text-sm font-medium tracking-wider text-slate-400 animate-pulse">
+      <div className="text-center py-48 text-[13px] font-medium tracking-widest uppercase text-white/50 animate-pulse">
         Fetching event specifications...
       </div>
     );
@@ -60,83 +60,81 @@ export default function EventDetails({ isAuthenticated, isDarkMode }) {
 
   if (!event) {
     return (
-      <div className={`text-center py-32 px-4 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-        <p className="text-sm mb-4">Event details not found or may have expired.</p>
-        <Link to="/" className="text-blue-500 hover:underline font-semibold">Return to Directory</Link>
+      <div className="text-center py-48 px-4 text-white">
+        <p className="text-sm tracking-wide font-light opacity-80 mb-6">Event details not found or may have expired.</p>
+        <Link to="/" className="text-[#96f940] hover:underline text-xs tracking-widest uppercase font-semibold">
+          Return to Directory
+        </Link>
       </div>
     );
   }
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-12 md:py-20 antialiased">
-      {/* Navigation Link */}
-      <Link to="/" className="group inline-flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white mb-8 transition-colors">
-        <svg className="w-3 h-3 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+    <main className="w-full max-w-7xl mx-auto px-4 py-12 md:py-16 antialiased font-sans text-white">
+      
+      {/* Premium Back Navigation */}
+      <Link to="/" className="group inline-flex items-center gap-2.5 text-[11px] uppercase tracking-widest font-bold text-white/60 hover:text-white mb-12 transition-colors">
+        <svg className="w-4 h-4 stroke-current transition-transform group-hover:-translate-x-1" fill="none" strokeWidth="2.5" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
         </svg>
-        Back to Events
+        Back to Directory
       </Link>
       
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
         
-        {/* Left Column: Context Area */}
-        <div className="lg:col-span-8 space-y-6">
-          <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight ${
-            isDarkMode ? 'text-white' : 'text-slate-900'
-          }`}>
+        {/* Left Column: Hero Context Info */}
+        <div className="lg:col-span-7 space-y-8">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-white">
             {event.title}
           </h1>
 
-          <div className={`text-base sm:text-lg leading-relaxed font-light whitespace-pre-wrap ${
-            isDarkMode ? 'text-slate-300' : 'text-slate-600'
-          }`}>
+          <div className="h-1 w-20 bg-[#96f940] rounded-full"></div>
+
+          <div className="text-base sm:text-lg leading-relaxed font-light text-white/80 whitespace-pre-wrap tracking-wide max-w-3xl">
             {event.description}
           </div>
         </div>
 
-        {/* Right Column */}
-        <div className="lg:col-span-4 w-full">
-          <div className={`border rounded-2xl p-6 md:p-8 space-y-6 shadow-sm backdrop-blur-xl transition-all duration-300 ${
-            isDarkMode 
-              ? 'bg-[#0f172a]/40 border-slate-800/80 shadow-black/20' 
-              : 'bg-white border-slate-200/80 shadow-slate-100'
-          }`}>
+        {/* Right Column: Premium Sidebar Widget Container */}
+        <div className="lg:col-span-5 w-full">
+          <div className="rounded-3xl p-8 md:p-10 space-y-8 backdrop-blur-xl bg-white/[0.06] border border-white/10 shadow-2xl">
             
-            <div className="space-y-4">
-              <h3 className={`text-xs font-bold uppercase tracking-widest ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                Event Details
+            <div className="space-y-6">
+              <h3 className="text-[11px] font-bold uppercase tracking-widest text-white/40 border-b border-white/10 pb-4">
+                Registration Profile
               </h3>
               
-              <div className="space-y-4 text-sm">
+              <div className="space-y-6 text-sm">
                 
-                <div className="flex items-start gap-3">
-                  <span className="text-base mt-0.5">📅</span>
-                  <div className="space-y-0.5">
-                    <span className={`block font-medium ${isDarkMode ? 'text-slate-200' : 'text-slate-800'}`}>Date & Time</span>
-                    <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                {/* Schedule Integration Layout */}
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-white/5 rounded-2xl text-xl border border-white/5">📅</div>
+                  <div className="space-y-1">
+                    <span className="block text-[11px] font-bold tracking-wider uppercase text-white/50">Date & Time</span>
+                    <span className="text-sm font-medium text-white/90">
                       {new Date(event.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' })}
                     </span>
                   </div>
                 </div>
 
-                {/* Venue  */}
-                <div className="flex items-start gap-3">
-                  <span className="text-base mt-0.5">📍</span>
-                  <div className="space-y-0.5">
-                    <span className={`block font-medium ${isDarkMode ? 'text-slate-200' : 'text-slate-800'}`}>Venue</span>
-                    <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{event.location}</span>
+                {/* Venue Layout */}
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-white/5 rounded-2xl text-xl border border-white/5">📍</div>
+                  <div className="space-y-1">
+                    <span className="block text-[11px] font-bold tracking-wider uppercase text-white/50">Venue Location</span>
+                    <span className="text-sm font-medium text-white/90">{event.location}</span>
                   </div>
                 </div>
 
-                {/* Live Seats */}
-                <div className="flex items-start gap-3">
-                  <span className="text-base mt-0.5">🎟️</span>
-                  <div className="space-y-0.5">
-                    <span className={`block font-medium ${isDarkMode ? 'text-slate-200' : 'text-slate-800'}`}>Availability</span>
-                    <span className={`text-xs font-semibold ${
+                {/* Live Capacity Indicators */}
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-white/5 rounded-2xl text-xl border border-white/5">🎟️</div>
+                  <div className="space-y-1">
+                    <span className="block text-[11px] font-bold tracking-wider uppercase text-white/50">Pass Availability</span>
+                    <span className={`text-sm font-bold ${
                       event.seats_left === 0 
-                        ? 'text-rose-500' 
-                        : event.seats_left <= 5 ? 'text-amber-500' : 'text-emerald-500'
+                        ? 'text-rose-400' 
+                        : event.seats_left <= 5 ? 'text-amber-400' : 'text-[#96f940]'
                     }`}>
                       {event.seats_left === 0 ? 'Fully Booked' : `${event.seats_left} seats left (out of ${event.max_seats})`}
                     </span>
@@ -146,29 +144,33 @@ export default function EventDetails({ isAuthenticated, isDarkMode }) {
               </div>
             </div>
 
-            {/*  Banner */}
+            {/* Application Feedback Banner Context */}
             {message.text && (
-              <div className={`p-3.5 rounded-xl text-xs font-semibold border ${
+              <div className={`p-4 rounded-2xl text-xs font-semibold border tracking-wide transition-all ${
                 message.type === 'success' 
-                  ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-500' 
-                  : 'bg-rose-500/5 border-rose-500/20 text-rose-500'
+                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' 
+                  : 'bg-rose-500/10 border-rose-500/30 text-rose-400'
               }`}>
                 {message.type === 'success' ? '✓ ' : '⚠️ '} {message.text}
               </div>
             )}
 
+            {/* Aeline-Spec Call to Action Component Button */}
             <button 
               onClick={handleRegister}
               disabled={submitting || event.seats_left === 0}
-              className={`w-full font-semibold text-xs uppercase tracking-wider py-4 rounded-xl shadow-sm transition-all duration-200 active:scale-[0.98] disabled:opacity-50 ${
+              className={`w-full font-bold text-xs uppercase tracking-widest py-4 px-6 rounded-full shadow-lg transition-all duration-300 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none flex justify-center items-center gap-2 ${
                 event.seats_left === 0
-                  ? 'bg-slate-800 text-slate-400 cursor-not-allowed'
-                  : isDarkMode 
-                    ? 'bg-white text-slate-950 hover:bg-slate-100' 
-                    : 'bg-slate-900 text-white hover:bg-slate-800'
+                  ? 'bg-white/10 text-white/40 cursor-not-allowed border border-white/10'
+                  : 'bg-[#96f940] text-slate-950 hover:bg-[#86e236] hover:scale-[1.01]'
               }`}
             >
-              {submitting ? 'Confirming Attendance...' : event.seats_left === 0 ? 'Sold Out' : 'Register for this Event'}
+              <span>{submitting ? 'Confirming Attendance...' : event.seats_left === 0 ? 'Sold Out' : 'Get Tickets'}</span>
+              {event.seats_left > 0 && !submitting && (
+                <svg className="w-3.5 h-3.5 stroke-current" fill="none" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                </svg>
+              )}
             </button>
 
           </div>

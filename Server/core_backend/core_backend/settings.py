@@ -65,8 +65,12 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    # frontend-domain goes here
+"https://pathway-1-8cok.onrender.com"  
 ]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 REST_FRAMEWORK = {

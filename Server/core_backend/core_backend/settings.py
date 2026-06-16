@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-)jevai1x5znz7he=dg1pceh$qb_+x)gm@k)f#+6c_+5b7)w^6t
 # SECURITY WARNING:
 DEBUG = os.environ.get('DJANGO_DEBUD', 'False') == 'True'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'render.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'pathway-2ood.onrender.com',]
 
 
 # Application definition

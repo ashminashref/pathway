@@ -27,7 +27,6 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        # create_user automatically runs PBKDF2 cryptographic hashing securely!
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data.get('email', ''),
@@ -36,7 +35,6 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 class EventSerializer(serializers.ModelSerializer):
-    # Dynamic fields calculated at runtime
     total_registrations = serializers.SerializerMethodField()
     seats_left = serializers.SerializerMethodField()
 
@@ -48,7 +46,6 @@ class EventSerializer(serializers.ModelSerializer):
         return obj.attendees.count()
 
     def get_seats_left(self, obj):
-        # Subtract current bookings from max capacity
         return max(0, obj.max_seats - obj.attendees.count())
 
 class RegistrationSerializer(serializers.ModelSerializer):
